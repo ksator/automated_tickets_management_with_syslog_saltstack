@@ -4,6 +4,9 @@ Junos automation demo using SaltStack and a ticketing system (Request Tracker).
 
 ![RT.png](RT.png)  
 
+Here's more detailled presentations of this demo: 
+- [automated tickets management based on syslog messages](automated tickets management.pdf)
+- [automated tickets management based on webhook notifications](OpenConfig_telemetry.pdf)
 
 ## Demo overview  
 - Junos devices send syslog messages to SaltStack.  
