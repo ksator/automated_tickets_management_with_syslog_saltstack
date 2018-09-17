@@ -85,7 +85,7 @@ There are python libraries that provide an easy programming interface for dealin
 
 Install the rt library
 ```
-# pip install -r requests nose six rt
+# pip install requests nose six rt
 ```
 Verify
 ```
@@ -95,29 +95,30 @@ Double check using a python interactive session.
 Example:  
 ```
 # python
+Python 2.7.12 (default, Dec  4 2017, 14:50:18)
+[GCC 5.4.0 20160609] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
 >>> import rt
->>> tracker = rt.Rt('http://172.30.52.150:9081/REST/1.0/', 'root', 'password')
->>> dir(tracker)
-['RE_PATTERNS', '_Rt__check_response', '_Rt__correspond', '_Rt__get_status_code', '_Rt__normalize_list', '_Rt__request', '__doc__', '__init__', '__module__', 'comment', 'create_queue', 'create_ticket', 'create_user', 'default_login', 'default_password', 'default_queue', 'edit_link', 'edit_queue', 'edit_ticket', 'edit_ticket_links', 'edit_user', 'get_attachment', 'get_attachment_content', 'get_attachments', 'get_attachments_ids', 'get_history', 'get_links', 'get_queue', 'get_short_history', 'get_ticket', 'get_user', 'last_updated', 'login', 'login_result', 'logout', 'merge_ticket', 'new_correspondence', 'reply', 'search', 'session', 'steal', 'take', 'untake', 'url']
+>>> tracker = rt.Rt('http://100.123.35.1:9081/REST/1.0/', 'root', 'password')
 >>> tracker.url
-'http://172.30.52.150:9081/REST/1.0/'
+'http://100.123.35.1:9081/REST/1.0/'
 >>> tracker.login()
 True
 >>> tracker.search(Queue='General', Status='new')
-[{u'Status': u'new', u'Priority': u'0', u'Resolved': u'Not set', u'TimeLeft': u'0', u'Creator': u'root', u'Started': u'Not set', u'Starts': u'Not set', u'Created': u'Mon May 14 07:54:23 2018', u'Due': u'Not set', u'LastUpdated': u'Mon May 14 07:54:25 2018', u'FinalPriority': u'0', u'Queue': u'General', 'Requestors': [u''], u'Owner': u'Nobody', u'Told': u'Not set', u'TimeEstimated': u'0', u'InitialPriority': u'0', u'id': u'ticket/1', u'TimeWorked': u'0', u'Subject': u'Device 172.30.52.85 configuration is not inline with the golden configuration rules described in test_telnet.yml'}, {u'Status': u'new', u'Priority': u'0', u'Resolved': u'Not set', u'TimeLeft': u'0', u'Creator': u'root', u'Started': u'Not set', u'Starts': u'Not set', u'Created': u'Tue May 15 06:58:38 2018', u'Due': u'Not set', u'LastUpdated': u'Tue May 15 06:58:40 2018', u'FinalPriority': u'0', u'Queue': u'General', 'Requestors': [u''], u'Owner': u'Nobody', u'Told': u'Not set', u'TimeEstimated': u'0', u'InitialPriority': u'0', u'id': u'ticket/2', u'TimeWorked': u'0', u'Subject': u'Device 172.30.52.85 configuration is not inline with the golden configuration rules described in test_telnet.yml'}]
->>> for item in tracker.search(Queue='General', Status='new'):
-...     print item['id']
+[]
+>>> tracker.create_ticket(Queue='General', Subject='abc', Text='bla bla bla')
+1
+>>> tracker.reply(1, text='notes you want to add to the ticket 1')
+True
+>>> tracker.search(Queue='General')
+[{u'Status': u'open', u'Priority': u'3', u'Resolved': u'Not set', u'TimeLeft': u'0', u'Creator': u'root', u'Started': u'Wed Jul 11 09:30:57 2018', u'Starts': u'Not set', u'Created': u'Wed Jul 11 09:30:10 2018', u'Due': u'Not set', u'LastUpdated': u'Wed Jul 11 09:30:57 2018', u'FinalPriority': u'0', u'Queue': u'General', 'Requestors': [u''], u'Owner': u'Nobody', u'Told': u'Not set', u'TimeEstimated': u'0', u'InitialPriority': u'0', u'id': u'ticket/1', u'TimeWorked': u'0', u'Subject': u'abc'}]
+>>> for item in  tracker.search(Queue='General'):
+...    print item['id']
 ...
 ticket/1
-ticket/2
->>> tracker.create_ticket(Queue='General', Subject='abc', Text='bla bla bla')
-4
->>> tracker.edit_ticket(4, Priority=3)
-True
->>> tracker.reply(4, text='Write here the notes you want to add to the ticket')
-True
 >>> tracker.logout()
 True
+>>> exit()
 ```
 
 # Gitlab
