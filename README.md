@@ -764,10 +764,10 @@ to watch the 0MQ event bus, run this command
 Shutdown an interface of a junos device.  
 
 ```
-salt vMX-1 junos.cli 'show interfaces terse ge-0/0/1'
-salt vMX-1 junos.install_config 'salt://disable_interface.set' confirm=1
-salt vMX-1 junos.cli 'show interfaces terse ge-0/0/1'
-salt vMX-1 junos.cli 'show configuration | compare rollback 1'
+# salt vMX-1 junos.cli 'show interfaces terse ge-0/0/1'
+# salt vMX-1 junos.install_config 'salt://disable_interface.set' confirm=1
+# salt vMX-1 junos.cli 'show interfaces terse ge-0/0/1'
+# salt vMX-1 junos.cli 'show configuration | compare rollback 1'
 ```
 
 The operationnal state of the interface ```ge-0/0/1``` moved from up to down.  
