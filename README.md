@@ -68,7 +68,7 @@ Building blocks:
 ## Details 
 
 - Here's more detailled presentations of this demo: [automated tickets management based on syslog messages](automated_tickets_management.pdf)  
-- Here's a presentation of another automated ticket management demo: [automated tickets management based on webhook notifications](OpenConfig_telemetry.pdf)
+- Here's a presentation of another automated ticket management demo: [automated tickets management based on webhook notifications](OpenConfig telemetry demo.pdf)
 
 
 ## Building blocks description
