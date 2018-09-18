@@ -62,7 +62,7 @@ Building blocks:
       - If there is no existing ticket to track this issue, SaltStack creates a new ticket and add the new syslog message to the new ticket.  
   - SaltStack automatically collects "show commands" output from junos devices and attach the devices output to the appropriate tickets. 
 
-![RT.png](RT.png)  
+![automated_tickets_management.png](automated_tickets_management.png)  
 
 
 ## Details 
