@@ -1,42 +1,102 @@
+# Documentation structure
+
+[About this project](#about-this-project)  
+[Lab description](#lab-description)  
+[About the demo](#about-the-demo)    
+&nbsp;&nbsp;&nbsp;&nbsp;[Overview](#overview)  
+&nbsp;&nbsp;&nbsp;&nbsp;[Details](#details)  
+&nbsp;&nbsp;&nbsp;&nbsp;[Building blocks description](#building-blocks-description)    
+[Instructions to prepare the setup](#instructions-to-prepare-the-setup)  
+&nbsp;&nbsp;&nbsp;&nbsp;[Overview](##overview-1)  
+&nbsp;&nbsp;&nbsp;&nbsp;[Clone this repository](#clone-this-repository)  
+&nbsp;&nbsp;&nbsp;&nbsp;[Install Docker](#install-docker)  
+&nbsp;&nbsp;&nbsp;&nbsp;[Instanciate a Gitlab docker container](#instanciate-a-gitlab-docker-container)  
+&nbsp;&nbsp;&nbsp;&nbsp;[Configure Gitlab](#configure-gitlab)  
+&nbsp;&nbsp;&nbsp;&nbsp;[Install SaltStack](#install-saltstack)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Overview](#overview-2)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Install master](#install-master)   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Install Minion](#install-minion)   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Install requirements for SaltStack Junos proxy](#install-requirements-for-saltstack-junos-proxy)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Install the junos syslog engine dependencies](#install-the-junos-syslog-engine-dependencies)  
+&nbsp;&nbsp;&nbsp;&nbsp;[Configure your setup](#configure-your-setup)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Overview](#overview-3)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Configure SaltStack master](#configure-saltstack-master)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Configure SaltStack minion](#configure-saltstack-minion)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Configure SaltStack pillars](#configure-saltstack-pillars)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Configure SaltStack proxy](#configure-saltstack-proxy)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Configure SaltStack files server](#configure-saltstack-files-server)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Configure SaltStack junos syslog engine](#configure-saltstack-junos-syslog-engine)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Configure SaltStack reactor](#configure-saltstack-reactor)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Configure Junos devices to send syslog messages to salt master](#configure-junos-devices-to-send-syslog-messages-to-salt-master)  
+[Familiarize yourself with this setup](#familiarize-yourself-with-this-setup)  
+[Run the demo](#run-the-demo)  
+
 
 
 # About this project 
 
-Junos automation demo using SaltStack and a ticketing system (Request Tracker). 
+Junos automation demo using SaltStack and a ticketing system (Request Tracker).  
+Based on syslog from junos, SaltStack automatically creates a new ticket or update the existing one. It also automatically collects "show commands" from junos devices and attach the devices output to the appropriate tickets.  
+For a more advanced equivalent demo, please visit the repository https://github.com/ksator/automation_summit_Q3_2018  
+
+# Lab description
+
+Building blocks:  
+- Junos (one vMX)
+- Ubuntu (one host) with Docker, RT (Request Tracker), SaltStack.  
+ 
+| hostname  | Management IP address  | Management interface  | Operating system | Version  | 
+| ------------- | ------------- | ------------- | ------------- | ------------- |
+| ubuntu | 100.123.35.1  | eth0  | ubuntu  | 16.04  |
+| vMX-1 | 100.123.1.1 | me0  | Junos  | 17.4R1-S2.2  | 
+
+
+# About the demo 
+
+## Overview  
+- Junos devices send syslog messages to SaltStack.  
+- Based on syslog messages received from junos devices: 
+  - SaltStack automatically manages RT (Request Tracker) tickets to track this issue. If there is already an existing ticket to track this issue, SaltStack updates the existing ticket with the new syslog message. If there is no existing ticket to track this issue, SaltStack creates a new ticket and add the new syslog message to the new ticket.  
+  - SaltStack automatically collects "show commands" output from junos devices and attach the devices output to the appropriate tickets. 
 
 ![RT.png](RT.png)  
+
+
+## Details 
 
 Here's more detailled presentations of this demo: 
 - [automated tickets management based on syslog messages](automated_tickets_management.pdf)
 - [automated tickets management based on webhook notifications](OpenConfig_telemetry.pdf)
 
-## Demo overview  
-- Junos devices send syslog messages to SaltStack.  
-- Based on syslog messages received from junos devices: 
-  - SaltStack automatically creates a new RT (Request Tracker) ticket to track this issue. If there is already an existing ticket to track this issue, SaltStack updates the existing ticket instead of creating a new one. The syslog messages are added to the appropriate tickets.  
-  - SaltStack automatically collects "show commands" output from junos devices and attach the devices output to the appropriate tickets. 
-  
-## Demo building blocks 
-- Junos  devices
-- SaltStack
-- RT (Request Tracker) 
-- Gitlab 
 
-## Building blocks role 
+## Building blocks description
+
+### Junos
+- There is one single Junos device
+- The hostname is ```vMX-1```
+- It is configured to send ```SNMP_TRAP_LINK_UP``` and ```SNMP_TRAP_LINK_DOWN``` syslog messages to SaltStack 
 
 ### Request Tracker 
 - This is the ticketing system. The tickets are automatically created and updated by SaltStack based on Junos syslog messages. Junos "show commands" output are automatically collected by SaltStack and attached to the appropriate tickets.  
 
-### Junos devices
-- They send syslog messages to SaltStack
-
-### SaltStack  
+### SaltStack
+- This demo uses these SaltStack components: A master, a minion, a proxy, the junos_syslog engine.  
+- All in one SaltStack setup: all the above components runs on the same Ubuntu host.  
 - The Salt master listens to syslog messages sent by junos devices
-- The Salt master generates a ZMQ message to the event bus when a junos syslog message is received. The ZMQ message has a tag and data. The data structure is a dictionary, which contains information about the event.
+- The Salt master generates a ZMQ messages to the event bus when a junos syslog message is received. The ZMQ message has a tag and data. The data structure is a dictionary, which contains information about the event.
 - The Salt reactor binds sls files to event tags. The reactor has a list of event tags to be matched, and each event tag has a list of reactor SLS files to be run. So these sls files define the SaltStack reactions.
-- The sls reactor file used in this content does the following: it parses the data from the ZMQ message to extract data (the network device name, and additional details). It then passes the data extracted to a runner (python script).  
-- The runner creates a new RT (Request Tracker) ticket. If there is already an existing ticket to track this issue, SaltStack updates the existing ticket instead of creating a new one. The syslog messages are added to the appropriate tickets. "show commands" output from junos devices are collected and attached to the appropriate tickets. 
+- The reactor does the following: 
+ - parses the data from the ZMQ messages to extracts the network device name
+ - searches for an existing ticket for this syslog message and device. If there is no existing ticket for this syslog message and device
+ it will create a new one. If there is an existing ticket for this syslog message and device it will update it
+ - asks to the proxy that manages the device that sent this syslog message to collect junos show commands output 
+ - attaches to the ticket the output of the junos commands
 
+
+### Ubuntu
+- There is one single Ubuntu host 
+- It has SaltStack installed: all the SaltStack components described above are installed on the same Ubuntu host.   
+- It has Docker installed. It has RT (docker container)   
 
 # Instructions to prepare the setup
 
