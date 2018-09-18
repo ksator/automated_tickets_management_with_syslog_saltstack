@@ -10,15 +10,15 @@
 &nbsp;&nbsp;&nbsp;&nbsp;[Overview](##overview-1)  
 &nbsp;&nbsp;&nbsp;&nbsp;[Clone this repository](#clone-this-repository)  
 &nbsp;&nbsp;&nbsp;&nbsp;[Install Docker](#install-docker)  
-&nbsp;&nbsp;&nbsp;&nbsp;[Instanciate a Gitlab docker container](#instanciate-a-gitlab-docker-container)  
-&nbsp;&nbsp;&nbsp;&nbsp;[Configure Gitlab](#configure-gitlab)  
+&nbsp;&nbsp;&nbsp;&nbsp;[Instanciate a Request Tracker container](#instanciate-a-request-tracker-container)  
+&nbsp;&nbsp;&nbsp;&nbsp;[Install a python library to consume RT REST API](#install-a-python-library-to-consume-rt-rest-api)  
 &nbsp;&nbsp;&nbsp;&nbsp;[Install SaltStack](#install-saltstack)  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Overview](#overview-2)  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Install master](#install-master)   
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Install Minion](#install-minion)   
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Install requirements for SaltStack Junos proxy](#install-requirements-for-saltstack-junos-proxy)  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Install the junos syslog engine dependencies](#install-the-junos-syslog-engine-dependencies)  
-&nbsp;&nbsp;&nbsp;&nbsp;[Configure your setup](#configure-your-setup)  
+&nbsp;&nbsp;&nbsp;&nbsp;[Configure SaltStack](#configure-your-setup)  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Overview](#overview-3)  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Configure SaltStack master](#configure-saltstack-master)  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Configure SaltStack minion](#configure-saltstack-minion)  
@@ -27,8 +27,8 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Configure SaltStack files server](#configure-saltstack-files-server)  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Configure SaltStack junos syslog engine](#configure-saltstack-junos-syslog-engine)  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Configure SaltStack reactor](#configure-saltstack-reactor)  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Configure Junos devices to send syslog messages to salt master](#configure-junos-devices-to-send-syslog-messages-to-salt-master)  
-[Familiarize yourself with this setup](#familiarize-yourself-with-this-setup)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Configure SaltStack runners](#configure-saltstack-runners)  
+&nbsp;&nbsp;&nbsp;&nbsp;[Configure Junos devices to send syslog messages to salt master](#configure-junos-devices-to-send-syslog-messages-to-salt-master)  
 [Run the demo](#run-the-demo)  
 
 
@@ -56,7 +56,9 @@ Building blocks:
 ## Overview  
 - Junos devices send syslog messages to SaltStack.  
 - Based on syslog messages received from junos devices: 
-  - SaltStack automatically manages RT (Request Tracker) tickets to track this issue. If there is already an existing ticket to track this issue, SaltStack updates the existing ticket with the new syslog message. If there is no existing ticket to track this issue, SaltStack creates a new ticket and add the new syslog message to the new ticket.  
+  - SaltStack automatically manages RT (Request Tracker) tickets to track this issue. 
+      - If there is already an existing ticket to track this issue, SaltStack updates the existing ticket with the new syslog message. 
+      - If there is no existing ticket to track this issue, SaltStack creates a new ticket and add the new syslog message to the new ticket.  
   - SaltStack automatically collects "show commands" output from junos devices and attach the devices output to the appropriate tickets. 
 
 ![RT.png](RT.png)  
