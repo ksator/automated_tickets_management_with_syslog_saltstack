@@ -64,9 +64,9 @@ Building blocks:
 
 ## Details 
 
-Here's more detailled presentations of this demo: 
-- [automated tickets management based on syslog messages](automated_tickets_management.pdf)
-- [automated tickets management based on webhook notifications](OpenConfig_telemetry.pdf)
+Here's more detailled presentations of this demo: [automated tickets management based on syslog messages](automated_tickets_management.pdf)  
+
+Here's a presentation of another automated ticket management demo: [automated tickets management based on webhook notifications](OpenConfig_telemetry.pdf)
 
 
 ## Building blocks description
@@ -85,12 +85,11 @@ Here's more detailled presentations of this demo:
 - The Salt master listens to syslog messages sent by junos devices
 - The Salt master generates a ZMQ messages to the event bus when a junos syslog message is received. The ZMQ message has a tag and data. The data structure is a dictionary, which contains information about the event.
 - The Salt reactor binds sls files to event tags. The reactor has a list of event tags to be matched, and each event tag has a list of reactor SLS files to be run. So these sls files define the SaltStack reactions.
-- The reactor does the following: 
- - parses the data from the ZMQ messages to extracts the network device name
- - searches for an existing ticket for this syslog message and device. If there is no existing ticket for this syslog message and device
- it will create a new one. If there is an existing ticket for this syslog message and device it will update it
- - asks to the proxy that manages the device that sent this syslog message to collect junos show commands output 
- - attaches to the ticket the output of the junos commands
+- The reactor sls file does the following: 
+    - parses the data from the ZMQ messages to extracts the network device name
+    - searches for an existing ticket for this syslog message and device. If there is no existing ticket for this syslog message and device it will create a new one. If there is an existing ticket for this syslog message and device it will update it
+    - asks to the proxy that manages the device that sent this syslog message to collect junos show commands output 
+    - attaches to the ticket the output of the junos commands
 
 
 ### Ubuntu
