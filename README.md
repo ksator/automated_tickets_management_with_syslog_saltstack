@@ -37,6 +37,7 @@
 
 Junos automation demo using SaltStack and a ticketing system (Request Tracker).  
 Based on syslog from junos, SaltStack automatically creates a new ticket or update the existing one. It also automatically collects "show commands" from junos devices and attach the devices output to the appropriate tickets.  
+
 For a more advanced equivalent demo, please visit the repository https://github.com/ksator/automation_summit_Q3_2018  
 
 # Lab description
