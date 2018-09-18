@@ -92,7 +92,7 @@ $ docker --version
 Docker version 18.03.1-ce, build 9ee9f40
 ```
 
-## Request Tracker
+## Instanciate a Request Tracker container
 
 Request Tracker (RT) is an open source issue tracking system.  
 There is a Request Tracker Docker image available https://hub.docker.com/r/netsandbox/request-tracker/  
@@ -131,14 +131,14 @@ CONTAINER ID        IMAGE                        COMMAND                  CREATE
 Access RT GUI with ```http://100.123.35.1:9081``` in a browser.  
 The default ```root``` user password is ```password```
 
-### Install the ```rt``` python library
+## Install a python library to consume RT REST API 
 
 There are python libraries that provide an easy programming interface for dealing with RT:  
 - [rtapi](https://github.com/Rickerd0613/rtapi) 
 - [python-rtkit](https://github.com/z4r/python-rtkit)
 - [rt](https://github.com/CZ-NIC/python-rt) 
 
-Install the ```rt``` library on the ubuntu host ```master1```
+### Install the ```rt``` library
 
 ```
 $ sudo -s
@@ -343,9 +343,9 @@ Copy the [SaltStack master configuration file](master) in the file ```/etc/salt/
 ```
 So: 
 - the Salt master is listening junos syslog messages on port 516. For each junos syslog message received, it generates an equivalent ZMQ message and publishes it to the event bus
-- The runners are in the directory /srv/runners 
-- The pillars (variables) are in the directory /srv/pillar
-- The files server (states files, templates, ...) are in the directory /srv/salt  
+- The runners are in the directory ```/srv/runners``` 
+- The pillars (variables) are in the directory ```/srv/pillar```
+- The files server (states files, templates, ...) are in the directory ```/srv/salt``` 
 
 
 #### Restart the salt-master service
