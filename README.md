@@ -446,7 +446,7 @@ The ```top.sls``` file map minions to sls (pillars) files.
 #### Pillars configuration
 
 Refer to the [master configuration file](master) to know the location for pillars.  
-Run these commands to copy [pillars files](pillars) from this repository to the directory /srv/pillar on the master  
+Run these commands to copy [pillars files](pillars) from this repository to the directory ```/srv/pillar``` on the master  
 
 ```
 # mkdir /srv/pillar
@@ -655,9 +655,9 @@ create the directory ```/srv/runners/```
 # mkdir /srv/runners
 ```
 and add the files [runners](runners) to the directory /srv/runners/
-
+```
 # cp automated_tickets_management/runners/* /srv/runners/
-
+```
 Test your runner:
 
 ```
