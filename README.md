@@ -673,14 +673,14 @@ Verify using The RT GUI. Access RT GUI with http://100.123.35.1:9081 in a browse
 The Salt master is listening junos syslog messages on port 516.  
 The pillar [production.sls](pillars/production.sls) defines the variable ```syslog_host```.  
 the variable ```syslog_host``` is the ip address of the salt master.  
-This variable is used by the state file [syslog.sls](states/syslog.sls) to render the template [syslog.conf](junos/syslog.conf) 
+This variable is used by the state file [syslog.sls](states/syslog.sls) to render the template [syslog.conf](templates/syslog.conf) 
 (to generate Junos configuration).  
 the state file [syslog.sls](states/syslog.sls) then loads the generated configuration to Junos devices  
 
 ```
-# more network_parameters/production.sls
-# more network_model/syslog.conf
-# more network_model/syslog.sls
+# more /srv/pillar/production.sls
+# more /srv/salt/syslog.conf
+# more /srv/salt/syslog.sls
 ```
 To get the value of the variable ```syslog_host```, run this command:  
 ```
