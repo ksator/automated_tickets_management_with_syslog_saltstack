@@ -79,7 +79,9 @@ Building blocks:
 - It is configured to send ```SNMP_TRAP_LINK_UP``` and ```SNMP_TRAP_LINK_DOWN``` syslog messages to SaltStack 
 
 ### Request Tracker 
-- This is the ticketing system. The tickets are automatically created and updated by SaltStack based on Junos syslog messages. Junos "show commands" output are automatically collected by SaltStack and attached to the appropriate tickets.  
+- This is the ticketing system.  
+- The tickets are automatically created and updated by SaltStack based on Junos syslog messages. 
+- Junos "show commands" output are automatically collected by SaltStack and attached to the appropriate tickets.  
 
 ### SaltStack
 - This demo uses these SaltStack components: A master, a minion, a proxy, the junos_syslog engine.  
