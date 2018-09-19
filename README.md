@@ -116,8 +116,8 @@ Building blocks:
 ```
 $ sudo -s
 # cd
-# git clone https://github.com/ksator/automated_tickets_management.git
-# ls automated_tickets_management
+# git clone https://github.com/ksator/automated_tickets_management_with_syslog_saltstack.git
+# ls automated_tickets_management_with_syslog_saltstack
 ```
 
 ## Install Docker
@@ -440,7 +440,7 @@ Junos_syslog engine  listens to syslog messages from Junos devices, extracts eve
 Copy the [SaltStack master configuration file](master) in the file ```/etc/salt/master```
 
 ```
-# cp automated_tickets_management/master /etc/salt/master
+# cp automated_tickets_management_with_syslog_saltstack/master /etc/salt/master
 ```
 So: 
 - the Salt master is listening junos syslog messages on port 516. For each junos syslog message received, it generates an equivalent ZMQ message and publishes it to the event bus
@@ -484,7 +484,7 @@ To check the status, you can run these commands:
 Copy the [minion configuration file](minion) in the file ```/etc/salt/minion```
 
 ```
-# cp automated_tickets_management/minion /etc/salt/minion
+# cp automated_tickets_management_with_syslog_saltstack/minion /etc/salt/minion
 ```
 
 #### Restart the salt-minion service
@@ -551,7 +551,7 @@ Run these commands to copy [pillars files](pillars) from this repository to the 
 
 ```
 # mkdir /srv/pillar
-# cp automated_tickets_management/pillars/* /srv/pillar
+# cp automated_tickets_management_with_syslog_saltstack/pillars/* /srv/pillar
 ```
 
 #### Pillars configuration verification
@@ -573,7 +573,7 @@ $ sudo -s
 
 Copy the [proxy configuration file](proxy) in the file ```/etc/salt/proxy```  
 ```
-# cp automated_tickets_management/proxy /etc/salt/proxy
+# cp automated_tickets_management_with_syslog_saltstack/proxy /etc/salt/proxy
 ```
 
 #### Start SaltStack proxy 
@@ -646,7 +646,7 @@ Run these commands to copy these [Junos templates](templates) to the directory `
 
 ```
 # mkdir /srv/salt
-# cp automated_tickets_management/templates/* /srv/salt
+# cp automated_tickets_management_with_syslog_saltstack/templates/* /srv/salt
 ```
 
 #### SaltStack state files
@@ -657,7 +657,7 @@ run these commands to copy these [states files](states) to the directory ```/srv
 
 
 ```
-# cp automated_tickets_management/states/* /srv/salt
+# cp automated_tickets_management_with_syslog_saltstack/states/* /srv/salt
 ```
 
 
@@ -703,7 +703,7 @@ The reactor binds sls files to event tags. The reactor has a list of event tags 
 To map some events to reactor sls files, copy the [reactor configuration file](reactor.conf) to ```/etc/salt/master.d/reactor.conf```  
 
 ```
-# cp automated_tickets_management/reactor.conf /etc/salt/master.d/
+# cp automated_tickets_management_with_syslog_saltstack/reactor.conf /etc/salt/master.d/
 # more /etc/salt/master.d/reactor.conf
 ```
 This reactor binds ```jnpr/syslog/*/SNMP_TRAP_LINK_*``` to ```/srv/reactor/show_commands_collection_and_attachment_to_RT.sls```  
@@ -723,7 +723,7 @@ create a ```/srv/reactor/``` directory
 ```
 and copy [these sls reactor files](reactor) to the directory ```/srv/reactor/```
 ```
-# cp automated_tickets_management/reactor/* /srv/reactor/
+# cp automated_tickets_management_with_syslog_saltstack/reactor/* /srv/reactor/
 # ls /srv/reactor/
 # more /srv/reactor/show_commands_collection_and_attachment_to_RT.sls
 ```
@@ -757,7 +757,7 @@ create the directory ```/srv/runners/```
 ```
 and add the files [runners](runners) to the directory /srv/runners/
 ```
-# cp automated_tickets_management/runners/* /srv/runners/
+# cp automated_tickets_management_with_syslog_saltstack/runners/* /srv/runners/
 ```
 Test your runner:
 
